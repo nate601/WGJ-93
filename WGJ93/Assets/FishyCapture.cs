@@ -7,6 +7,9 @@ using Random = UnityEngine.Random;
 public class FishyCapture : MonoBehaviour
 {
 
+    public static float captureMultiplier = 1;
+
+
     public float captureTimer;
     public float captureTimeMax;
 
@@ -18,7 +21,7 @@ public class FishyCapture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        captureTimeMax = Random.Range(1, 5) * transform.localScale.x;
+        captureTimeMax = Random.Range(1, 3) * transform.localScale.x;
         captureTimer = captureTimeMax;
     }
 
@@ -42,12 +45,12 @@ public class FishyCapture : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        captureTimer -= Time.deltaTime;
+        captureTimer -= Time.deltaTime * captureMultiplier;
 
         if (!(captureTimer <= 0)) return;
 
         Debug.Log("Capture complete");
-        Scoring.instance.UpdateScore((int)Math.Floor(transform.localScale.x));
+        Scoring.instance.UpdateScore((int)Math.Ceiling(transform.localScale.x));
         Destroy(gameObject);
 
     }
